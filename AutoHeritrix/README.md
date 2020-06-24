@@ -3,8 +3,8 @@ Feel free to use more mark down for formatting the text-->
 # AutoHeritrix
 
 ## Explanation of the script
-AutoHeritrix is a script intended to automate the creation, building and launching of jobs in Heritrix 3.4.
-The script uses Python Requests to communicate with Heritrix REST API, launching jobs based on a list of URLs.
+AutoHeritrix is a script intended to automate the creation, building and launching of jobs in Heritrix 3.
+The script uses Python Requests library to communicate with Heritrix REST API, launching jobs based on a list of URLs.
 
 Please note that the script is intended to be run specifically in Sydarkiveras production environment. The script will not work properly without editing the code to fit other hardware- and software setups.
 
