@@ -15,15 +15,16 @@ For running this script there are dependencies to the following software librair
 
 -	Python 3 (https://www.python.org/)
 -	Requests (https://requests.readthedocs.io/)
--   Heritrix 3 (https://github.com/internetarchive/heritrix3)
+- Heritrix 3 (https://github.com/internetarchive/heritrix3)
 
 A txt-file containing a list of URLs to be crawled is required as well as an XML-template for Heritrix configuration.
 Please refer to the Heritrix 3 documentation for information on how to install and configure Heritrix.
  
 ## How to run the script
 1.  Place the script, the template and the URL-list in a folder, for instance under /home.
-2.  Edit the script to specify the path of the template and URL-list (if seperate) and the URL and authentication details used for your Heritrix 3.
-3.  Make sure Heritrix 3 is running and properly configured to run jobs.
+2.  Make sure Heritrix 3 is running and properly configured to run jobs.
+3.  Edit the script to specify the path of the template and URL-list (if seperate) and the URL and authentication details used for your Heritrix 3.
+4.  Edit the template ```crawler-beans.xml```with your crawl options.
 4.  Run the script in your Python 3 environment: ```$ python3 AutoHeritrix.py```
 
 ### Steps of the script
