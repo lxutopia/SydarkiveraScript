@@ -37,7 +37,7 @@ if reply == "y" or reply == "Y":
         print("Creating job '" + line + "'...", end = '')
         payload = {'createpath':line, 'action':'create'}
         post = requests.post(heritrixUrl, data=payload, auth=HTTPDigestAuth(heritrixLogin,heritrixPass), verify=False)
-        if "200" in str(post):
+        if "200" in str(post.status_code):
             print("\033[92mDone!\033[0m")
             flawless = True
         else:
@@ -80,7 +80,7 @@ if reply == "y" or reply == "Y":
             payload = {'action':'build'}
             print("Building job " + line + "... ", end = '')
             post = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixLogin,heritrixPass), verify=False)
-            if "200" in str(post):
+            if "200" in str(post.status_code):
                 print("\033[92mDone!\033[0m")
                 flawless = True
             else:
@@ -91,7 +91,7 @@ if reply == "y" or reply == "Y":
             payload = {'action':'launch'}
             print("Launching job " + line + "... ", end = '')
             post = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixLogin,heritrixPass), verify=False)
-            if "200" in str(post):
+            if "200" in str(post.status_code):
                 print("\033[92mDone!\033[0m")
                 flawless = True
             else:

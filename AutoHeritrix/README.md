@@ -34,5 +34,14 @@ Please refer to the Heritrix 3 documentation for information on how to install a
 5.  Wait for the script to finish building and running the jobs. Make sure to check the Heritrix web interface to confirm whether the jobs have been started.
 6. You're done!
 
+## Monthly
+Sydarkivera uses a modified version of the script for more frequent automated crawls of select webpages.
+The monthly variant of AutoHeritrix is meant to be scheduled using job scheduler software (like cron) and will not ask for any user input when run.
+Instead, all variables needed for the script to function are defined inside the script itself, requiring some editing before it will run.
+
+For example, you can schedule it using crontab: ```* * * *    /usr/bin/python3    /path/to/script/AutoHeritrixMonthly.py >> /path/to/logs/autoHeritrixLog.txt```
+
+The script uses the same template and URL-list structure to input and output data. If you are running both the standard version and the monthly version, it is recommended to keep them seperated in different folders with their own templates and URL-lists.
+
 ## Description by:
 Magnus "PreAmbience" Heimonen, 2020-06-24
