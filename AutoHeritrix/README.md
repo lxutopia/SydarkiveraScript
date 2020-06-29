@@ -44,5 +44,8 @@ For example, you can schedule it using crontab: ```* * * *    /usr/bin/python3  
 
 The script uses the same template and URL-list structure to input and output data. If you are running both the standard version and the monthly version, it is recommended to keep them seperated in different folders with their own templates and URL-lists.
 
+Once jobs have been run, the script will let them run for 48 hours before performing a teardown on them to save resources and prepare them for the next build and run.
+Teardowns can also be performed manually by running the script ```teardown.py```.
+
 ## Description by:
 Magnus "PreAmbience" Heimonen, 2020-06-24
