@@ -37,9 +37,9 @@
 # This Properties map is specified in the Java 'property list' text format
 # http://java.sun.com/javase/6/docs/api/java/util/Properties.html#load%28java.io.Reader%29
 
-metadata.operatorContactUrl=http://sydarkivera.se/
+metadata.operatorContactUrl=your contact url
 metadata.jobName=basic
-metadata.description=Sydarkivera Config 2020
+metadata.description=your config description
 
 ##..more?..##
    </value>
@@ -54,7 +54,7 @@ metadata.description=Sydarkivera Config 2020
     <prop key="seeds.textSource.value">
 
 # URLS HERE
-URLSAKERNA
+URLPLACEHOLDER
 
     </prop>
    </props>
@@ -66,10 +66,10 @@ URLSAKERNA
        <property name="operatorContactUrl" value="[see override above]"/>
        <property name="jobName" value="[see override above]"/>
        <property name="description" value="[see override above]"/>
-       <property name="robotsPolicyName" value="ignore"/>
-       <property name="operator" value="Magnus H"/>
+  <!-- <property name="robotsPolicyName" value="ignore"/> -->
+       <property name="operator" value="Operator Name"/>
   <!-- <property name="operatorFrom" value=""/> -->
-       <property name="organization" value="Kommunalförbundet Sydarkivera"/>
+       <property name="organization" value="Organization name"/>
   <!-- <property name="audience" value=""/> -->
   <!-- <property name="userAgentTemplate" 
          value="Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)"/> -->
