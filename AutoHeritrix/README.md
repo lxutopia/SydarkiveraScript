@@ -34,7 +34,6 @@ Alternatively you can schedule AutoHeritrix to run using crontab: ```* * * *    
 
 When the software runs the first time it will create an index file that keeps track of which URLs have been started in case of a crash or other issue.
 If the index reaches its end you can start the software with ```-new``` to reset the index. This is recommended when AutoHeritrix runs through a cronjob.
->>>>>>> parent of a0bba0a (Merge branch 'AutoHeritrix' of https://github.com/PreAmbience/SydarkiveraScript into AutoHeritrix)
 
 ### AutoHeritrix2020.py
 The 2020 version of AutoHeritrix allows for a manual launch through the command line and is meant for a smaller amount of crawls.
