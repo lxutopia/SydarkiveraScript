@@ -129,40 +129,40 @@ def startJob(dt_short):
             #Create the job...
             print("Starting job [\033[97m" + str(jobIndex + 1) + "\033[0m] " + currentJob + "... ", end = '')
             payload = {'createpath':currentJob, 'action':'create'}
-            # session = requests.post(heritrixUrl, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
-            # if "200" in str(session.status_code):
-            steps = steps + 1
+            session = requests.post(heritrixUrl, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
+            if "200" in str(session.status_code):
+                steps = steps + 1
             
             #Edit local config file URL-line...    
-            # baseFile = [line.rstrip('\n') for line in open(filePath + "crawler-beans-base.cxml")]
-            # marker = baseFile.index("# URLS HERE") + 1
-            # baseFile[marker] = baseFile[marker].replace(baseFile[marker],lineList[idx])
-            # if baseFile[marker] == lineList[idx]:
-            steps = steps + 1
+            baseFile = [line.rstrip('\n') for line in open(filePath + "crawler-beans-base.cxml")]
+            marker = baseFile.index("# URLS HERE") + 1
+            baseFile[marker] = baseFile[marker].replace(baseFile[marker],lineList[idx])
+            if baseFile[marker] == lineList[idx]:
+                steps = steps + 1
             
             #Send new config file to job...    
             jobPath = arcPath + currentJob + "/crawler-beans.cxml"
-            # outfile = open(jobPath,"a+")
-            # outfile.truncate(0)
-            # for line in baseFile:
-                # outfile.write(jobList[line] + '\n')
-            # outfile.close()
-            # if os.path.exists(jobPath):
-            steps = steps + 1
+            outfile = open(jobPath,"a+")
+            outfile.truncate(0)
+            for line in baseFile:
+                outfile.write(jobList[line] + '\n')
+            outfile.close()
+            if os.path.exists(jobPath):
+                steps = steps + 1
                 
             jobURL = heritrixUrl + "/job/" + currentJob
             if not os.path.exists(arcPath + currentJob):
                 #Build the job...
                 payload = {'action':'build'}
-                # session = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
-                # if "200" in str(session.status_code):
-                steps = steps + 1
+                session = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
+                if "200" in str(session.status_code):
+                    steps = steps + 1
                     
             #Launch the job...
             payload = {'action':'launch'}
-            # session = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
-            # if "200" in str(session.status_code):
-            steps = steps + 1
+            session = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
+            if "200" in str(session.status_code):
+                steps = steps + 1
                 
             #Everything went well
             if steps == 6:
@@ -204,7 +204,6 @@ while mainLoop:
         endtime = now - starttime
         print("\033[92mAll URLs crawled in " + str(endtime.days) + " days\033[0m - Exiting AutoHeritrix.")
         exit(0)
-    #time.sleep(waitTime) #Sleep for 6 hours before checking again
-    time.sleep(5)
+    time.sleep(waitTime) #Sleep for 6 hours before checking again
 
 
