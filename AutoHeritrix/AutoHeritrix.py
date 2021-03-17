@@ -9,9 +9,8 @@ from urllib3.exceptions import InsecureRequestWarning
 # Suppress only the single warning from urllib3 needed.
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
-#Change working directory
+#Change working directory if needed
 #os.chdir("/home/AutoHeritrix_Monthly")
-os.chdir("C:/Users/Magnus/Documents/AutoHeritrix")
 
 filePath = "" #The path of the .cxml template for all crawls, usually "crawler-beans-base.cxml"
 jobID = "" #The appended ID of the job
