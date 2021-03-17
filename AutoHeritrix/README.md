@@ -11,11 +11,9 @@ Please note that the software is intended to be run specifically in Sydarkiveras
 ## Dependencies
 This software is designed to run in a Linux environment, tested successfully on CentOS 7 (https://www.centos.org/).
 
-<<<<<<< HEAD
 For running this script there are dependencies to the following software libraires:
-=======
+
 Running this software requires the following dependencies:
->>>>>>> parent of a0bba0a (Merge branch 'AutoHeritrix' of https://github.com/PreAmbience/SydarkiveraScript into AutoHeritrix)
 
 - Python 3 (https://www.python.org/)
 - Requests library (https://requests.readthedocs.io/)
@@ -23,35 +21,14 @@ Running this software requires the following dependencies:
 
 A txt-file containing a list of URLs to be crawled is required as well as an XML-template for Heritrix configuration.
 Please refer to the Heritrix 3 documentation for information on how to install and configure Heritrix.
- 
-<<<<<<< HEAD
-## How to run the script
-1.  Place the script, the template and the URL-list in a folder, for instance under /home.
-2.  Make sure Heritrix 3 is running and properly configured to run jobs.
-3.  Edit the script to specify the path of the template and URL-list (if seperate) and the URL and authentication details used for your Heritrix 3.
-4.  Edit the template ```crawler-beans.xml```with your crawl options.
-4.  Run the script in your Python 3 environment: ```$ python3 AutoHeritrix.py```
 
-### Steps of the script
-1.  Specify an ID for your crawls. The ID will be used to name the Heritrix jobs. For example, the current date.
-2.  The program will list the URLs found in the URL-list combined with the ID you specified, after which you will be asked whether to create the jobs in Heritrix. Reply Y or N and press Return.
-3.  Wait for the job creation to finish. If everything is set up properly you should now be able to see the jobs listed in the Heritrix web interface. Make sure to refresh the page if you don't. 
-4.  The program will ask whether you want to build and run the jobs. Reply Y or N and press Return.
-5.  Wait for the script to finish building and running the jobs. Make sure to check the Heritrix web interface to confirm whether the jobs have been started.
-6. You're done!
-
-## Monthly
-Sydarkivera uses a modified version of the script for more frequent automated crawls of select webpages.
-The monthly variant of AutoHeritrix is meant to be scheduled using job scheduler software (like cron) and will not ask for any user input when run.
-Instead, all variables needed for the script to function are defined inside the script itself, requiring some editing before it will run.
-=======
 ## How to run the software
 1.  Place the version of AutoHeritrix you intend to use, the template and the URL-list in a folder, for instance under /home.
 2.  Make sure Heritrix 3 is running and properly configured to run jobs. Generally, if you can access the web interface, you're good to go.
-3.	Edit the URL-list, seperating each URL to be crawled on a new line.
-3.  Edit the python script to fit your crawing environment. Please refer to the comments to understand what needs to be specified.
-4.  Edit the template ```crawler-beans.xml```with your prefered crawl options.
-5.  Run the software in your Python 3 environment: ```$ python3 AutoHeritrix.py```
+3.	 Edit the URL-list, seperating each URL to be crawled on a new line.
+4.  Edit the python script to fit your crawing environment. Please refer to the comments to understand what needs to be specified.
+5.  Edit the template ```crawler-beans.xml```with your prefered crawl options.
+6.  Run the software in your Python 3 environment: ```$ python3 AutoHeritrix.py```
 
 Alternatively you can schedule AutoHeritrix to run using crontab: ```* * * *    /usr/bin/python3    /path/to/software/AutoHeritrixMonthly.py -new >> /path/to/logs/autoHeritrixLog.txt```
 
@@ -74,8 +51,4 @@ Once jobs have been run, the script will let them run for 48 hours before perfor
 Teardowns can also be performed manually by running the script ```teardown.py```.
 
 ## Description by:
-<<<<<<< HEAD
-Magnus "PreAmbience" Heimonen, 2020-06-24
-=======
 Magnus "PreAmbience" Heimonen, 2021-03-17
->>>>>>> parent of a0bba0a (Merge branch 'AutoHeritrix' of https://github.com/PreAmbience/SydarkiveraScript into AutoHeritrix)
