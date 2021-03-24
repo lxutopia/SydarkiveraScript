@@ -2,6 +2,7 @@ import os.path
 import requests
 import time
 import sys
+import getopt
 from datetime import datetime
 from requests.auth import HTTPDigestAuth
 from urllib3.exceptions import InsecureRequestWarning
@@ -9,56 +10,76 @@ from urllib3.exceptions import InsecureRequestWarning
 # Suppress only the single warning from urllib3 needed.
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
-#Change working directory if needed
-#os.chdir("/home/AutoHeritrix_Monthly")
-
+# Default configuration
 filePath = "" #The path of the .cxml template for all crawls, usually "crawler-beans-base.cxml"
 jobID = "" #The appended ID of the job
-arcPath = "" #The path to Heritrix jobs directory
-inputFile = "" #Usually a txt file with all the URLs to be crawled
+inputFile = "URLs.txt" #Usually a txt file with all the URLs to be crawled
 heritrixUrl = "" #The URL to the Heritrix engine
 heritrixUser = "" #Username for Heritrix authentication
 heritrixPass = "" #Password for Heritrix authentication
 jobLimit = 10 #Amount of jobs allowed to run at any one time
-waitTime = 21600 #Amount of SECONDS the program should wait before looping
-
+waitTime = 21600 #Amount of SECONDS the program should wait before looping, default 6 hours
 finished = 0
 running = 0
 finList = []
 jobList = []
-lineList = [line.rstrip('\n') for line in open(inputFile)]
+newRun = False
 
 session = requests.Session()
 
 starttime = datetime.now()
 
 ## CHECK ARGUMENTS ##################################
+argv = sys.argv[1:]
 try:
-    if sys.argv[1]:
-        arg = sys.argv[1]
-except IndexError:
-        arg = None
-        pass
+    opts, args = getopt.getopt(argv, "i:a:u:p:f:w:l:d:n")
+    for opt, arg in opts:
+        if opt in ['-i']:
+            jobID = arg
+        elif opt in ['-a']:
+            heritrixUrl = arg
+        elif opt in ['-u']:
+            heritrixUser = arg
+        elif opt in ['-p']:
+            heritrixPass = arg
+        elif opt in ['-f']:
+            inputFile = arg
+        elif opt in ['-w']:
+            waitTime = int(arg)
+        elif opt in ['-l']:
+            jobLimit = int(arg)
+        elif opt in ['-n']:
+            newRun = True
+        elif opt in ['-d']:
+            os.chdir(arg)
+except:
+    print("Error in arguments. Quitting...")
+    sys.exit()
 
 ## CHECK URL LIST ###################################
-if len(lineList) == 0:
-    print("URL list is empty. Exiting.")
-    exit(1)
+try:
+    lineList = [line.rstrip('\n') for line in open(inputFile)] 
+    if len(lineList) == 0:
+        sys.exit("\033[91mURL list is empty. Exiting.\033[0m")
+except FileNotFoundError:
+    sys.exit("\033[91mCannot find URL list. Specify one with -f 'name'\033[0m")
 
 ## CHECK HERITRIX ###################################
 try:
     session = requests.get(heritrixUrl, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
-    if "200" in str(session.status_code):
+    if "200" in str(session.status_code) and "heritrixVersion" in session.text:
         print("\033[92mConnected to Heritrix engine.\033[0m")
-    else:
-        print("\033[91mCannot authenticate with Heritrix!\033[0m Error: 401\nPlease make sure you have entered the correct username and password!")
-        exit(1)
+    elif "200" in str(session.status_code) and "heritrixVersion" not in session.text:
+        sys.exit("\033[91mSpecified URL is not a Heritrix engine URL!\033[0m\nPlease make sure you have entered the correct URL!")
+    elif "401" in str(session.status_code):
+        sys.exit("\033[91mCannot authenticate with Heritrix!\033[0m Error: 401\nPlease make sure you have entered the correct username and password!")
 except ConnectionRefusedError:
-    print("\033[91mCannot connect to Heritrix!\033[0m \nPlease make sure Heritrix engine is running and you have entered the correct URL!")
-    exit(1)
+    sys.exit("\033[91mCannot connect to Heritrix!\033[0m \nPlease make sure Heritrix engine is running and you have entered the correct URL!")
+except requests.ConnectionError:
+    sys.exit("\033[91mCannot connect to Heritrix!\033[0m \nPlease make sure Heritrix engine is running and you have entered the correct URL!")
 
 ## CREATE INDEX FILE IF MISSING #####################
-if not os.path.exists("index") or arg == "-new":
+if not os.path.exists("index") or newRun == True:
     print("Creating / resetting index file.")
     with open("index","w") as indexFile:
         indexFile.write("0")
@@ -75,14 +96,13 @@ with open("index","r") as indexFile:
                 print("[" + str(idx + 1) + '] ' + line)
             jobList.append(line)
     else:
-        print("\n\033[92mReached end of URL index.\033[0m\nIf you want to start over, please run the program with the argument -new\nAutoHeritrix will continue performing teardowns until all jobs have finished.")
+        print("\n\033[92mReached end of URL index.\033[0m\nIf you want to start over, please run the program with the argument -n\nAutoHeritrix will continue performing teardowns until all jobs have finished.")
         
 ## GET CURRENT HERITRIX STATUS ######################
 def getStatus():
     global finished, running, finList, available
     session = requests.get(heritrixUrl, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
     output = session.content.decode().split()
-
     finished = 0
     running = 0
     finList.clear()
@@ -94,7 +114,6 @@ def getStatus():
             running += 1
     print("Running: " + str(running) + '\nFinished: ' + str(finished))
     available = jobLimit - running
-
 
 ## TEAR DOWN FINISHED JOBS ###########################
 def teardown():
@@ -111,13 +130,11 @@ def teardown():
             print("\033[91mERROR!\033[0m: " + str(session.status_code))
     finList.clear()
 
-
 ### START AVAILABLE JOBS #############################
 def startJob(dt_short):
-    global jobList, jobID, jobIndex, arcPath, heritrixUrl, available
+    global jobList, jobID, jobIndex, heritrixUrl, available
     date = dt_short
     flawlessRun = False
-
     i=0
     try:
         while i < available:
@@ -140,23 +157,17 @@ def startJob(dt_short):
             if baseFile[marker] == lineList[idx]:
                 steps = steps + 1
             
-            #Send new config file to job...    
-            jobPath = arcPath + currentJob + "/crawler-beans.cxml"
-            outfile = open(jobPath,"a+")
-            outfile.truncate(0)
-            for line in baseFile:
-                outfile.write(jobList[line] + '\n')
-            outfile.close()
-            if os.path.exists(jobPath):
+            #Send new config file to job... 
+            configUrl = heritrixUrl + "/job/" + currentJob + "/jobdir/crawler-beans.cxml"
+            session = requests.put(configUrl, data='\n'.join(baseFile), auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
+            if "200" in str(session.status_code):
                 steps = steps + 1
                 
-            jobURL = heritrixUrl + "/job/" + currentJob
-            if not os.path.exists(arcPath + currentJob):
-                #Build the job...
-                payload = {'action':'build'}
-                session = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
-                if "200" in str(session.status_code):
-                    steps = steps + 1
+            #Build the job...
+            payload = {'action':'build'}
+            session = requests.post(jobURL, data=payload, auth=HTTPDigestAuth(heritrixUser,heritrixPass), verify=False)
+            if "200" in str(session.status_code):
+                steps = steps + 1
                     
             #Launch the job...
             payload = {'action':'launch'}
@@ -182,7 +193,7 @@ def startJob(dt_short):
             available -= 1
             jobIndex += 1
     except IndexError:
-        print("\n\033[92mReached end of URL index.\033[0m\nIf you want to start over, please run the program with the argument -new\nAutoHeritrix will continue performing teardowns until all jobs have finished.")
+        print("\n\033[92mReached end of URL index.\033[0m\nIf you want to start over, please run the program with the argument -n\nAutoHeritrix will continue performing teardowns until all jobs have finished.")
         pass
 
 ## MAIN LOOP #########################################
@@ -202,8 +213,5 @@ while mainLoop:
             indexFile.write(str(jobIndex)) #Write current index to file
     if jobIndex >= len(jobList) and available == jobLimit:
         endtime = now - starttime
-        print("\033[92mAll URLs crawled in " + str(endtime.days) + " days\033[0m - Exiting AutoHeritrix.")
-        exit(0)
-    time.sleep(waitTime) #Sleep for 6 hours before checking again
-
-
+        sys.exit("\033[92mAll URLs crawled in " + str(endtime.days) + " days\033[0m - Exiting AutoHeritrix.")
+    time.sleep(waitTime)
