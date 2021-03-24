@@ -35,7 +35,8 @@ When the software runs the first time it will create an index file that keeps tr
 If the index reaches its end you can start the software with ```-new``` to reset the index. This is recommended when AutoHeritrix runs through a cronjob.
 
 ## Arguments
-```-i [ID]		The job ID to be appended to the URL in the job name. Leave empty for date to be automatically added as ID.
+```
+-i [ID]		The job ID to be appended to the URL in the job name. Leave empty for date to be automatically added as ID.
 -a [URL]		The URL to the Heritrix engine.
 -u [USERNAME]		The Heritrix username.
 -p [PASSWORD]		The Heritrix password.
@@ -43,9 +44,8 @@ If the index reaches its end you can start the software with ```-new``` to reset
 -w [SECONDS]		The amount of time between status checks. Default is 21600, 6 hours.
 -l [NUMBER]		The amount of jobs that should be running at any one time. Default is 10.
 -d [PATH]		The work directory for the script. Useful if all AutoHeritrix files are in the same folder.
--n		Flag to reset the index and start reading the URL-list from the top.```
-
-
+-n		Flag to reset the index and start reading the URL-list from the top.
+```
 ### AutoHeritrix2020.py
 The 2020 version of AutoHeritrix allows for a manual launch through the command line and is meant for a smaller amount of crawls.
 This version is no longer supported by Sydarkivera and does not support scheduling.
