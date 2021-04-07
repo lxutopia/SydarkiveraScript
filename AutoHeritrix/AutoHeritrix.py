@@ -142,6 +142,7 @@ def startJob(dt_short):
                 currentJob = jobList[jobIndex] + '-' + jobID
             else:
                 currentJob = jobList[jobIndex] + '-' + date
+            jobURL = heritrixUrl + "/job/" + currentJob
             steps = 1
             #Create the job...
             print("Starting job [\033[97m" + str(jobIndex + 1) + "\033[0m] " + currentJob + "... ", end = '')
@@ -153,8 +154,8 @@ def startJob(dt_short):
             #Edit local config file URL-line...    
             baseFile = [line.rstrip('\n') for line in open(filePath + "crawler-beans-base.cxml")]
             marker = baseFile.index("# URLS HERE") + 1
-            baseFile[marker] = baseFile[marker].replace(baseFile[marker],lineList[idx])
-            if baseFile[marker] == lineList[idx]:
+            baseFile[marker] = baseFile[marker].replace(baseFile[marker],lineList[jobIndex])
+            if baseFile[marker] == lineList[jobIndex]:
                 steps = steps + 1
             
             #Send new config file to job... 
