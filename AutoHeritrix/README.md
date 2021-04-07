@@ -29,7 +29,7 @@ Please refer to the Heritrix 3 documentation for information on how to install a
 4.  Edit the template ```crawler-beans.xml```with your prefered crawl options.
 5.  Run the software in your Python 3 environment: ```$ python3 AutoHeritrix.py``` with the desired command line arguments below.
 
-Alternatively you can schedule AutoHeritrix to run using crontab: ```* * * *    /usr/bin/python3    /path/to/software/AutoHeritrixMonthly.py -new >> /path/to/logs/autoHeritrixLog.txt```
+Alternatively you can schedule AutoHeritrix to run using crontab: ```* * * *    /usr/bin/python3    /path/to/software/AutoHeritrixMonthly.py -n -d /path/to/configAndUrlList/ >> /path/to/logs/autoHeritrixLog.txt```
 
 When the software runs the first time it will create an index file that keeps track of which URLs have been started in case of a crash or other issue.
 If the index reaches its end you can start the software with ```-n``` to reset the index. This is recommended when AutoHeritrix runs through a cronjob.
