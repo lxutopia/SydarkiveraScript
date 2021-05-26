@@ -7,6 +7,10 @@ from datetime import datetime
 from requests.auth import HTTPDigestAuth
 from urllib3.exceptions import InsecureRequestWarning
 
+# Enable logging to file
+sys.stdout = open('heritrixLog.txt','w')
+sys.stderr = sys.stdout
+
 # Suppress only the single warning from urllib3 needed.
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
