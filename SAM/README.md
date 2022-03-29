@@ -20,8 +20,7 @@ If you wish to run the non-compiled version, you will require the following Pyth
 1.  Place the software wherever you want, as long as the software has read/write privileges. We recommend placing it in the same folder as the files you wish to process.
 2.	Run the software.
 3.	Using the GUI, select the file you wish to process.
-4.	If you are splitting a file, specify the size of the parts in Megabytes (MB)
-	Depending on what file you have chosen, the software will recognise whether to split or merge the file.
+4.	If you are splitting a file, specify the size of the parts in Megabytes (MB). Depending on what file you have chosen, the software will recognise whether to split or merge the file.
 6.	Specify the input and output folders accordingly. The software will update these dynamically when needed.
 7.	If you want to use encryption/decryption, check the checkbox and choose to create or open a keyfile.
 8.	Select Split or Merge to run the operation.
