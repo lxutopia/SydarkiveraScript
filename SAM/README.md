@@ -9,7 +9,7 @@ The software can split files into smaller parts, merge them together again and o
 ## Dependencies
 This software is designed to run on all platforms and has been tested on Windows 10/11 and Ubuntu 20.10.
 
-The software is distributed as an executable, pre-packaged with requires libraries.
+The software is distributed as an executable, pre-packaged with required libraries.
 If you wish to run the non-compiled version, you will require the following Python 3 libraries:
 
 - Hashlib
