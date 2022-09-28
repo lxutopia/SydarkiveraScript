@@ -16,7 +16,7 @@ If you wish to run the non-compiled version, you will require the following Pyth
 - Tkinter
 - Cryptography
 
-## How to run the software
+## How to use SAM GUI
 1.  Place the software wherever you want, as long as the software has read/write privileges. We recommend placing it in the same folder as the files you wish to process.
 2.	Run the software.
 3.	Using the GUI, select the file you wish to process.
@@ -24,6 +24,24 @@ If you wish to run the non-compiled version, you will require the following Pyth
 6.	Specify the input and output folders accordingly. The software will update these dynamically when needed.
 7.	If you want to use encryption/decryption, check the checkbox and choose to create or open a keyfile.
 8.	Select Split or Merge to run the operation.
+
+## How to use SAM CLI
+Run the software through a terminal of your choice.
+
+-f [file]      Default: N/A
+The file to process. This can be either an original file or a split. When merging, point to either of the ".part" files.
+
+-e [file]      Default: N/A
+This enables encryption on both splitting and merging. Specify a path and/or a name for the keyfile.
+
+-s [folder]    Default: ./split/
+The folder in which to place the split files and the checksums. This is only used when splitting.
+
+-m [folder]    Default: ./merged/
+The folder in which to place the merged file. This is only used when merging.
+
+-c [number]    Default: 200
+The size of the split files in Megabytes (MB)
 
 ## Description by:
 Magnus "PreAmbience" Heimonen, 2022-03-29
