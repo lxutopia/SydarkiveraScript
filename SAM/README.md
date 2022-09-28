@@ -29,7 +29,7 @@ If you wish to run the non-compiled version, you will require the following Pyth
 Run the software through a terminal of your choice.
 
 | Argument | Default value | Usage |  
-|---------------|:-----------:|-----------|  
+|---------------|:-----------:|:-----------|  
 | -f [file] | N/A | Required. The file to process. This can be either an original file or a split. When merging, point to any ".part" created by SAM. |  
 | -e [file] | N/A | Optional. Enables encryption/decryption on both splitting and merging. Specify a path and/or a name for the keyfile.  |
 | -s [folder] | split | Optional. The folder in which to place the split files and the checksums. This is only used when splitting. |
