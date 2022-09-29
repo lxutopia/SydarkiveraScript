@@ -28,20 +28,13 @@ If you wish to run the non-compiled version, you will require the following Pyth
 ## How to use SAM CLI
 Run the software through a terminal of your choice.
 
--f [file]      Default: N/A
-The file to process. This can be either an original file or a split. When merging, point to either of the ".part" files.
-
--e [file]      Default: N/A
-This enables encryption on both splitting and merging. Specify a path and/or a name for the keyfile.
-
--s [folder]    Default: ./split/
-The folder in which to place the split files and the checksums. This is only used when splitting.
-
--m [folder]    Default: ./merged/
-The folder in which to place the merged file. This is only used when merging.
-
--c [number]    Default: 200
-The size of the split files in Megabytes (MB)
+| Argument | Default value | Usage |  
+|---------------|:-----------:|:-----------|  
+| -f [file] | N/A | Required. The file to process. This can be either an original file or a split. When merging, point to any ".part" created by SAM. |  
+| -e [file] | N/A | Optional. Enables encryption/decryption on both splitting and merging. Specify a path and/or a name for the keyfile.  |
+| -s [folder] | split | Optional. The folder in which to place the split files and the checksums. This is only used when splitting. |
+| -m [folder] | merged | Optional. The folder in which to place the merged file. This is only used when merging. |
+| -c [number] | 200 | Optional. The max size of the split files in Megabytes (MB) |
 
 ## Description by:
-Magnus "PreAmbience" Heimonen, 2022-03-29
+Magnus "PreAmbience" Heimonen, 2022-09-28
