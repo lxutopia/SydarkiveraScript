@@ -21,19 +21,19 @@ def fileCombine():
     #If parts are specified, combine the parts
     print('\nMerging operation started\n')
     if not mergedPath:
-            print("Merged folder not specified. Proceeding with default ./merged/")
-            mergedPath = scriptpath + '\\merged'
+            print("Merged folder not specified. Proceeding with default 'merged'...")
+            mergedPath = scriptpath + '/merged'
     if not os.path.exists(mergedPath): os.mkdir(mergedPath)
     if encrypt:
         cryptpath = os.path.join(partsPath,cryptfile)
         try:
             key = open(cryptpath, 'rb').read()
-            print('Using existing encryption key \'' + cryptfile + '\'\n\n')
+            print('Using existing encryption key \'' + cryptfile + '\'...\n')
             fernet = Fernet(key)
         except:
-            print("No crypto key found." + '\n')
+            print("No crypto key found\n")
     else:
-        print("Encryption file not specified. Proceeding without encryption.")
+        print("Encryption file not specified. Proceeding without encryption...")
     origName = re.sub('.part(.*)', '', filename)
     with open(os.path.join(mergedPath,origName),"wb") as out:
         for root, dirs, files in os.walk(filepath):
@@ -47,6 +47,7 @@ def fileCombine():
                 if encrypt: out.write(fernet.decrypt(open(os.path.join(root,part[0]),'rb').read()))
                 else: out.write(open(os.path.join(root,part[0]),'rb').read())
                 i = i + 1
+    print("\nCalculating checksum of merged file'" + origName + "'...")
     h = hashlib.md5()
     blockSize = 2**20
     with open(os.path.join(mergedPath,origName), 'rb') as f:
@@ -56,12 +57,13 @@ def fileCombine():
                 break
             h.update(data)
     print('\n' + h.hexdigest() + spc + os.path.join(mergedPath,origName))
+    print('\nOperation complete!\n')
     
 
 def fileSplit():
     global inputFile, mergedPath, partsPath, cryptfile
     chunksize = 1024 * (inputSize * 1000)
-    print('Splitting operation started')
+    print('Splitting operation started\n\nCalculating checksum of ' + filename + '\nThis may take a while...\n')
     h = hashlib.md5()
     blockSize = 2**20
     with open(inputFile, 'rb') as f:
@@ -71,26 +73,27 @@ def fileSplit():
                 break
             h.update(data)
         origChecksum = h.hexdigest()
-    out = origChecksum + spc + filename + '\n\n'
+    out = origChecksum + spc + filename + '\n'
     print(out)
     logOutput.append(out)
     if not partsPath:
-            print("Split folder not specified. Proceeding with default ./split/")
-            partsPath = scriptpath + '\\split'
+            print("Split folder not specified. Proceeding with default 'split'...")
+            partsPath = scriptpath + '/split'
     if not os.path.exists(partsPath): os.mkdir(partsPath)
     if encrypt:
         if not os.path.exists(cryptfile):
             key = Fernet.generate_key()
             fernet = Fernet(key)
-            print('Generating new encryption key ' + cryptfile + '\n')
+            print("Generating new encryption key '" + cryptfile + "'...")
             with open(cryptfile, 'wb') as keyfile: keyfile.write(key)
         else:
             key = open(cryptfile, 'rb').read()
-            print('Using existing encryption key ' + cryptfile + '\n')
+            print("Using existing encryption key '" + cryptfile + "'...")
             fernet = Fernet(key)
+        print("Splitting chunks of " + str(inputSize) + " MB into encrypted files...")
     else:
-        print("Encryption file not specified. Proceeding without encryption.")
-    print("Splitting into " + str(inputSize) + " MB files")
+        print("Encryption file not specified. Proceeding without encryption...")
+        print("Splitting into " + str(inputSize) + " MB files...")
     with open(inputFile,"rb") as file:
         num = 0
         while 1:
@@ -101,6 +104,7 @@ def fileSplit():
             num = num + 1
     
     #Generate hashes after split
+    print("Calculating checksums on splits...\n")
     for root, dirs, files in os.walk(partsPath):
         parts = [part for part in files if filename + '.part' in part]
         i = 0
@@ -114,6 +118,7 @@ def fileSplit():
             i = i + 1
     with open(os.path.join(partsPath,filename + '_checksums.log'),'w') as log:
         for line in logOutput: log.write(line)
+    print('\nOperation complete!\n')
 
 def selectProcess():
     global inputFile
@@ -157,14 +162,16 @@ def readOpts():
             sys.exit()
     else:
         print("""
-SAM - Split and Merge by Magnus Heimonen, 2022
+################################################
+#SAM - Split and Merge by Magnus Heimonen, 2022#
+################################################
 
 SAM splits large files into smaller parts or reassembles them, both with optional encryption and decryption. 
 
 To process files, please use the following arguments:
 
 -f [file]      Default: N/A
-The file to process. This can be either an original file or a split. When merging, point to either of the ".part" files.
+The file to process. This can be either an original file or a split. When merging, point to any ".part" file.
 
 -e [file]      Default: N/A
 This enables encryption on both splitting and merging. Specify a path and/or a name for the keyfile.
@@ -177,6 +184,14 @@ The folder in which to place the merged file. This is only used when merging.
 
 -c [number]    Default: 200
 The size of the split files in Megabytes (MB)
+
+Example for splitting:
+
+./SAM_cli -f "C:\Documents\Example_file" -c 150 -e keyfile -s splitfolder
+
+Example of merging
+
+./SAM_cli -f "C:\Documents\split\Example_file.part0" -e keyfile -m mergedfolder
 
         """)
 
