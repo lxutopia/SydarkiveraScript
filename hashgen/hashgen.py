@@ -71,6 +71,8 @@ for opt, arg in opts:
         debug = True
     if opt in ['-l']:
         logPath = arg
+    if opt in ['-x']:
+        print("TODO")
 
 #Read file contents
 if not newRun:
